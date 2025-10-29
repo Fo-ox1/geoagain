@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>25-26 уроки | тест</title>
+<style>
+  :root{
+    --bg:linear-gradient(180deg,#f8fafc,#eef2ff);
+    --card:#ffffff;
+    --accent:#6d28d9;
+    --accent-2:#2563eb;
+    --muted:#6b7280;
+    --success:#16a34a;
+    --danger:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background:var(--bg);
+    color:#0f172a;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+  header{padding:28px 40px 8px}
+  h1{margin:0;font-size:26px;letter-spacing:-0.2px}
+  p.lead{margin:6px 0 0;color:var(--muted)}
+  main{width:100%;padding:24px 40px 40px}
+  .section{
+    margin:18px auto 28px;
+    max-width:1100px;
+    border-radius:14px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.6));
+    padding:18px 20px;
+    box-shadow: 0 8px 30px rgba(15,23,42,0.06);
+    transition:transform .35s cubic-bezier(.2,.9,.3,1), box-shadow .35s;
+  }
+  .section:hover{transform:translateY(-4px); box-shadow: 0 18px 40px rgba(15,23,42,0.1)}
+  .section h2{margin:0 0 8px;font-size:18px}
+  .q{
+    padding:14px;border-radius:12px;background:rgba(255,255,255,0.9);
+    border:1px solid rgba(14,165,233,0.03);
+    margin:12px 0; display:block; transition:box-shadow .25s, transform .25s;
+  }
+  .q h3{margin:0 0 10px;font-size:15px}
+  .opts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  label.opt{
+    display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;
+    border:1px solid transparent;cursor:pointer;background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.4));
+    transition:transform .18s cubic-bezier(.2,.9,.3,1), box-shadow .18s, background .18s;
+  }
+  label.opt:hover{transform:translateY(-4px); box-shadow:0 8px 24px rgba(16,24,40,0.06)}
+  input[type=radio], input[type=checkbox]{width:18px;height:18px;flex:0 0 18px}
+  .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
+  button.btn{
+    background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;
+    box-shadow:0 8px 20px rgba(99,102,241,0.12);transition:transform .12s, box-shadow .12s;
+  }
+  button.btn:active{transform:translateY(1px)}
+  button.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--muted);padding:8px 12px;border-radius:10px}
+  .note{margin-top:10px;font-size:14px;min-height:20px;transition:all .35s;opacity:0;transform:translateY(6px)}
+  .note.show{opacity:1;transform:translateY(0)}
+  .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px}
+  .badge.ok{background:rgba(16,185,129,0.12);color:var(--success);border:1px solid rgba(16,185,129,0.08)}
+  .badge.err{background:rgba(239,68,68,0.08);color:var(--danger);border:1px solid rgba(239,68,68,0.06)}
+  .modal-backdrop{position:fixed;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:60;opacity:0;visibility:hidden;transition:opacity .28s}
+  .modal-backdrop.show{opacity:1;visibility:visible}
+  .modal{width:min(720px,92%);background:linear-gradient(180deg,#ffffff,#fbfdff);padding:22px;border-radius:14px;text-align:center;box-shadow:0 18px 60px rgba(2,6,23,0.4);transform:scale(0.9);transition:transform .28s}
+  .modal.show{transform:scale(1)}
+  .confetti-canvas{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:70;opacity:0;transition:opacity .35s}
+  .confetti-canvas.show{opacity:1}
+  footer{padding:20px 40px 60px;color:var(--muted);font-size:13px}
+  .highlight-correct{animation:correctGlow .9s ease forwards}
+  .highlight-wrong{animation:wrongPulse .9s ease forwards}
+  @keyframes correctGlow{0%{box-shadow:0 0 0 rgba(16,185,129,0)}50%{box-shadow:0 8px 30px rgba(16,185,129,0.12)}100%{box-shadow:0 0 0 rgba(16,185,129,0)}}
+  @keyframes wrongPulse{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+  @media (max-width:900px){ .opts{grid-template-columns:1fr} .section{padding:14px} header{padding:18px} main{padding:18px} }
+</style>
+</head>
+<body>
+<header>
+<div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:column;">
+<h1>25-26 уроки | тест</h1>
+<p class="lead">ещё один тест... бро ты учись и т.д. (пожалуйста)</p>
+</div>
+</header>
+<main id="main"></main>
+<div style="max-width:1200px;margin:20px auto 40px;display:flex;gap:12px;align-items:center;justify-content:center;padding:12px 24px;z-index:10">
+<button class="btn" id="submit-all">Отправить результат</button>
+<button class="ghost" id="reset">Сбросить тест</button>
+</div>
+<div aria-hidden="true" class="modal-backdrop" id="backdrop" style="pointer-events:none">
+<div aria-modal="true" class="modal" id="modalBox" role="dialog">
+<h3 id="modal-title">Результаты теста</h3>
+<p id="modal-body"></p>
+<div style="margin-top:12px"><button class="btn" id="close-modal">Закрыть</button></div>
+</div>
+</div>
+<canvas class="confetti-canvas" id="confetti"></canvas>
+<footer>
+<div style="max-width:1200px;margin:0 auto;text-align:center">отличная работа!</div>
+</footer>
+<script>
+/* NEW QUESTIONS GENERATED FROM PROVIDED CONСПЕКТ (all material used) */
+const data = [
+  {section:'Технические культуры — общие понятия', qs:[
+    {q:'Что означает термин "технические культуры" в конспекте?', opts:['растения для декоративных целей','сельскохозяйственные растения для получения сырья для промышленности и пищевой продукции','дикорастущие растения','только зерновые культуры','медицинские растения'], ans:1, type:'single'},
+    {q:'Какие продукты получают из технических культур согласно конспекту? (выберите все подходящие)', opts:['сахар','растительное масло','волокна','металлы','ароматические и лекарственные вещества','только мясо'], ans:[0,1,2,4], type:'multi'},
+    {q:'К какой категории отнесён подсолнечник?', opts:['волокнистые','масличные','сахароносные','тонизирующие'], ans:1, type:'single'},
+    {q:'К какой категории относится хлопчатник?', opts:['волокнистые','масличные','сахароносные','тонизирующие'], ans:0, type:'single'},
+    {q:'Пример тонизирующих культур из конспекта:', opts:['сахарная свёкла','лен','кофе и чай','рапс'], ans:2, type:'single'},
+    {q:'Класс масличных культур включает (выберите все подходящие)', opts:['соя','арахис','лен','рапс','кунжут','джут'], ans:[0,1,3,4], type:'multi'},
+    {q:'Класс волокнистых культур включает (выберите все подходящие)', opts:['лён','хлопчатник','кенаф','джут','кукуруза'], ans:[0,1,2,3], type:'multi'}
+  ]},
+  {section:'Исследователи и исторические факты', qs:[
+    {q:'Кто из конспекта назван крупнейшим исследователем народной терминологии Казахстана?', opts:['Махмуд Кашгари','Гани Конкашпаев','Актюбинский краевед','Чарльз Дарвин'], ans:1, type:'single'},
+    {q:'В каких текстах впервые встречаются топонимы в письменном виде согласно конспекту?', opts:['древнегреческих','древнеримских','древнеегипетских текстах первой половины II тыс. до н.э.','коптских текстах'], ans:2, type:'single'},
+    {q:'Какую работу Махмуд Кашгари написал в 1072–1074 гг., где объяснял географические названия?', opts:['Кодекс Навои','Диван Лугат ат-Тюрк','Книга царей','Записки путешественника'], ans:1, type:'single'},
+    {q:'Какие топонимы объяснял Махмуд Кашгари в своём труде? (выберите все подходящие)', opts:['Тараз','Сайрам','Иссык-Куль','Самарканд','Атырау'], ans:[0,1,2,3], type:'multi'},
+    {q:'Какой факт про Бангкок указан в конспекте?', opts:['самый короткий топоним в мире','самый длинный в мире — на тайском 20 слов и 112 букв (по Гиннесу)','назван в честь короля','находится на острове'], ans:1, type:'single'},
+    {q:'Где в мире есть топонимы, состоящие из одной буквы? (выберите все подходящие)', opts:['река D в Орегоне (США)','деревня Y в северной Франции','холмы "Йо" в Дании','в Монголии'], ans:[0,1,2], type:'multi'}
+  ]},
+  {section:'Топонимика — термины и определения', qs:[
+    {q:'Что означает "арка" в топонимике по конспекту?', opts:['узкая долина','спина, хребет — крупная вытянутая возвышенность','плоское озеро','глубокий овраг'], ans:1, type:'single'},
+    {q:'Как описано "соран" в конспекте?', opts:['низкая равнина','круглая низина','конусовидная крутосклонная вершина, выделяющаяся высотой','побережье озера'], ans:2, type:'single'},
+    {q:'Что такое "шокы" согласно материалу?', opts:['остроконечная вершина гор','тип растительности','река','береговая низина'], ans:0, type:'single'},
+    {q:'Значение термина "кент" в конспекте:', opts:['река','город, крупное поселение городского типа','гора','лес'], ans:1, type:'single'},
+    {q:'Что означает "корган" в конспекте?', opts:['крепость, укрепление','деревня','торговая площадь','маленькая гора'], ans:0, type:'single'},
+    {q:'Что такое "орда" согласно конспекту?', opts:['местность с болотами','ставка хана, столица','тип почвы','название реки'], ans:1, type:'single'},
+    {q:'Что обозначает "Атырау" как термин?', opts:['город в горах','дельта, побережье большого озера или моря с заливами и дельтами рек','пустыня','холм'], ans:1, type:'single'},
+    {q:'Что такое "кол" по конспекту?', opts:['озеро','гора','долина','река'], ans:0, type:'single'},
+    {q:'Определение "сор" в конспекте:', opts:['плоское горько-соленое озеро, весной наполняющееся водой, летом частично или полностью высыхающее','маленький город','остров','крутой склон'], ans:0, type:'single'},
+    {q:'Что обозначает "Жаланаш" в названии озера Жаланаш?', opts:['заросшее растениями','голое, открытое, не заросшее озеро','глубокое','солёное'], ans:1, type:'single'}
+  ]},
+  {section:'Ойконимы — названия населённых пунктов (примеры)', qs:[
+    {q:'Что означает название "Алматы" согласно конспекту?', opts:['яблоневый','город у озера','красная столица','белая гора'], ans:0, type:'single'},
+    {q:'Значение "Актобе":', opts:['белый холм','богатая долина','две головы соли','крутосклонное ущелье'], ans:0, type:'single'},
+    {q:'Что означает "Актау"?', opts:['белая гора','красная столица','озеро','хребет'], ans:0, type:'single'},
+    {q:'Происхождение "Костанай" по конспекту:', opts:['от слова "кост" — солончак','от имени казака Костан с окончанием "ай" выражающим восхищение','от названия реки','от растительного покрова'], ans:1, type:'single'},
+    {q:'Что означает "Караганды" в конспекте?', opts:['место, где растёт караган','город у реки','местность с озёрами','место добычи меди'], ans:0, type:'single'},
+    {q:'Происхождение "Екибастуз":', opts:['озеро с одной головой','две головы соли','холм','побережье'], ans:1, type:'single'},
+    {q:'Что означает "Жезказган"?', opts:['богатая долина','местность, где добывали медь','крутосклонное ущелье','река'], ans:1, type:'single'},
+    {q:'Значение "Байконыр":', opts:['богатая долина','столица','маленькая деревня','дельта'], ans:0, type:'single'},
+    {q:'Что значит "Кызылорда"?', opts:['красная столица','белая гора','яблоневый','хребет'], ans:0, type:'single'},
+    {q:'Происхождение "Тараз" по конспекту включает слова "тара" и "ас" — что они значат?', opts:['"тара" — распространённая на полив, "ас" — река, вода','"тара" — холм, "ас" — степь','"тара" — лес, "ас" — гора','"тара" — река, "ас" — плоскость'], ans:0, type:'single'}
+  ]},
+  {section:'Гидронимы — названия водных объектов', qs:[
+    {q:'Что означает "Каспийское море" согласно конспекту?', opts:['море племени каспиев','большое пресное озеро','малое море','название города'], ans:0, type:'single'},
+    {q:'Значение "Арал" (Аральское море):', opts:['озеро без островов','остров','название порта','тип берега'], ans:1, type:'single'},
+    {q:'Что означает "Балкаш" по конспекту?', opts:['кристально чистое озеро','болотистая, кочковатая местность, топь','река','пустыня'], ans:1, type:'single'},
+    {q:'Значение "Алаколь":', opts:['пестрое озеро','большое озеро','река','голое озеро'], ans:0, type:'single'},
+    {q:'Что означает "Тениз"?', opts:['маленькое озеро','большое озеро','река','пруд'], ans:1, type:'single'},
+    {q:'Происхождение "Карасор":', opts:['чёрный солончак','чистое озеро','озеро с рыбой','маленькая река'], ans:0, type:'single'},
+    {q:'Значение "Бурабай" в конспекте:', opts:['верблюд, самец верблюда','красная гора','плодородная равнина','тип облаков'], ans:0, type:'single'},
+    {q:'Что означает "Коргалджин"?', opts:['свинцовое озеро','мелководное море','плотина','река'], ans:0, type:'single'},
+    {q:'Этимология "Ертис":', opts:['"вести за собой" — река, которая следует за Обью','"большая вода"','"мутная"','"текущая в горах"'], ans:0, type:'single'},
+    {q:'Что означает "Есиль" по конспекту?', opts:['вьющаяся, долготекущая река','мёртвое озеро','озеро с островами','маленькая река'], ans:0, type:'single'}
+  ]},
+  {section:'Гидронимы — продолжение и примеры', qs:[
+    {q:'Значение "Тобыл" в материале:', opts:['река, связанная с таволгой','озеро','пустыня','гора'], ans:0, type:'single'},
+    {q:'Что означает "Жайык"?', opts:['текущая по равнине, разливающаяся','скалистая вершина','болото','маленькое озеро'], ans:0, type:'single'},
+    {q:'Происхождение "Жем":', opts:['корм, летнее пастбище','тип почвы','название рыбы','пустынная равнина'], ans:0, type:'single'},
+    {q:'Этимология "Сырдария":', opts:['большая желтая река','маленькая река','озеро','река с прозрачной водой'], ans:0, type:'single'},
+    {q:'Значение "Ыргыз":', opts:['"повести за собой" — река принимающая много притоков','озеро','пустыня','горный хребет'], ans:0, type:'single'},
+    {q:'Что обозначает "Торгай" по конспекту?', opts:['воробей (топоним)', 'озеро','река','гора'], ans:0, type:'single'},
+    {q:'Значение "Сарысу":', opts:['желтая река','большое озеро','плодородная равнина','река с прозрачной водой'], ans:0, type:'single'},
+    {q:'Что означает "Шу (Чу)"?', opts:['вода, река','гора','лес','пустыня'], ans:0, type:'single'},
+    {q:'Этимология "Талас" компоненты "тара" и "ас" обозначают:', opts:['"разбираемая на орошение" и "вода/река"','"холм" и "река"','"плодородная" и "озеро"','"красный" и "столица"'], ans:0, type:'single'},
+    {q:'Что означает "Иле" по конспекту?', opts:['многоводная, огибающая река','пустынная река','маленькая речка','озеро'], ans:0, type:'single'}
+  ]},
+  {section:'Дождь и типы осадков', qs:[
+    {q:'Что означает термин "Өткінші" в разделе "Дождь"?', opts:['короткий, иногда сильный дождь при ярком солнце ("слепой")','моросящий дождь','сильный проливной дождь','ледяной дождь'], ans:0, type:'single'},
+    {q:'Какой тип осадков описывается как "бүрікпе жауын"?', opts:['моросящий дождь','сильный ливень','снег','град'], ans:0, type:'single'},
+    {q:'Что такое "ақ жауын" в конспекте?', opts:['не сильный, но продолжительный летний дождь при серовато-белых облаках','короткий ливневый дождь','гроза с градом','ледяной дождь'], ans:0, type:'single'},
+    {q:'Определение "сылбыр жауын":', opts:['медленный продолжительный дождь','короткий сильный ливень','сухая погода','снегопад'], ans:0, type:'single'},
+    {q:'Что такое "нөсер" согласно конспекту?', opts:['сильный проливной (ливень)','морось','ледяной дождь','туман'], ans:0, type:'single'},
+    {q:'Что означает "қара жаңбыр" в материале?', opts:['весенний и осенний холодный, длительный сильный дождь, от которого в отсутствие ухода погибал скот','летний кратковременный дождь','тёплый дождь','сухой ветер'], ans:0, type:'single'},
+    {q:'Что такое "килау"?', opts:['мелкий искристый пушистый снег','сильный ливень','гроза','морось'], ans:0, type:'single'}
+  ]},
+  {section:'Классификация топонимов и географические термины', qs:[
+    {q:'Что такое ойконимы согласно конспекту?', opts:['названия лесов','названия населённых пунктов','названия рек','названия гор'], ans:1, type:'single'},
+    {q:'Что такое астионимы?', opts:['названия городов','названия морей','названия рек','названия сел'], ans:0, type:'single'},
+    {q:'Что обозначают гидронимы?', opts:['названия водных объектов','названия гор','названия населённых пунктов','названия дорог'], ans:0, type:'single'},
+    {q:'Что такое дримонимы в конспекте?', opts:['названия лесов','названия рек','названия озёр','названия городов'], ans:0, type:'single'},
+    {q:'Оронимы — это:', opts:['названия гор','названия рек','названия улиц','названия морей'], ans:0, type:'single'},
+    {q:'Что такое урбанонимы?', opts:['названия городских объектов','названия пастбищ','названия полей','названия рек'], ans:0, type:'single'},
+    {q:'Городские улицы в конспекте называются:', opts:['пелагонимы','годонимы','хоронимы','агронимы'], ans:1, type:'single'},
+    {q:'Пелагонимы — это:', opts:['названия морей и их частей','названия улиц','названия поселений','названия гор'], ans:0, type:'single'}
+  ]},
+  {section:'Примеры типов номенклатуры (дальше)', qs:[
+    {q:'Гелонимы в конспекте — это:', opts:['названия болот','названия рек','названия островов','названия гор'], ans:0, type:'single'},
+    {q:'Потамонимы — это:', opts:['названия рек','названия озёр','названия морей','названия гор'], ans:0, type:'single'},
+    {q:'Лимнонимы — это:', opts:['названия озёр, прудов, водохранилищ','названия улиц','названия полей','названия городов'], ans:0, type:'single'}
+  ]},
+  {section:'Информационные слои цифровой карты', qs:[
+    {q:'Какая информация относится к размерной информации на цифровой карте? (выберите все подходящие)', opts:['пространственные координаты','рельеф местности','размеры населённых пунктов','климатические пояса','высотные системы'], ans:[0,1], type:'multi'},
+    {q:'Какие объекты перечислены как цифровая информация на карте? (выберите все подходящие)', opts:['леса','пастбища','склоны гор','места залегания водоёмов','геологическая характеристика'], ans:[0,1,2,3], type:'multi'},
+    {q:'Что относится к смысловой информации на цифровой карте? (выберите все подходящие)', opts:['инженерные сооружения','данные о деревьях и лесах','наименование местности','геодезические характеристики'], ans:[0,1], type:'multi'},
+    {q:'Что является структурной информацией на карте?', opts:['ж/д дороги и структура сооружений населённых пунктов','погодные условия','растительность','подземные воды'], ans:0, type:'single'},
+    {q:'Что включает общая информация на цифровой карте? (выберите все подходящие)', opts:['наименование местности','высотные системы','географическая номенклатура','состав почв'], ans:[0,1,2], type:'multi'}
+  ]},
+  {section:'Атмосфера — слои и приборы', qs:[
+    {q:'Какая оболочка Земли называется атмосферой?', opts:['водная оболочка','воздушная оболочка','каменная оболочка','электрическая оболочка'], ans:1, type:'single'},
+    {q:'В каком слое формируется погода по конспекту?', opts:['стратосфера','тропосфера','мезосфера','термосфера'], ans:1, type:'single'},
+    {q:'Где преимущественно находится озоновый слой (вызывает нагревание воздуха)?', opts:['тропосфера','стратосфера','мезосфера','экзосфера'], ans:1, type:'single'},
+    {q:'Какой прибор используется для изучения верхних слоёв атмосферы (примерно 35-40 км)?', opts:['радиозонд','спутник','флюгер','барометр'], ans:0, type:'single'},
+    {q:'Какие приборы отнесены в конспекте к первым метеорологическим приборам? (выберите все подходящие)', opts:['флюгер','термометр','барометр','анемометр','радиозонд'], ans:[0,1,2,3], type:'multi'},
+    {q:'Нормальное атмосферное давление в мм рт. ст. по конспекту равно:', opts:['760 мм','720 мм','800 мм','700 мм'], ans:0, type:'single'},
+    {q:'При подъёме из нижнего слоя атмосферы на каждые ~10 м давление понижается примерно на:', opts:['1 мм рт. ст.','10 мм','0.1 мм','не меняется'], ans:0, type:'single'}
+  ]},
+  {section:'Климат — пояса, ветры и фронты', qs:[
+    {q:'Климатообразующие факторы включают (выберите все подходящие)', opts:['географическую широту','циркуляцию воздушных масс','рельеф','океанические течения','солнечную активность'], ans:[0,1,2,3], type:'multi'},
+    {q:'Какие ветры относятся к постоянным по конспекту? (выберите все подходящие)', opts:['пассаты','западные ветра','муссоны','бризы'], ans:[0,1], type:'multi'},
+    {q:'Какие ветры меняют направление дважды в сутки?', opts:['пассаты','бризы','муссоны','западные ветра'], ans:1, type:'single'},
+    {q:'Какие ветры меняют направление два раза в год (сезонно)?', opts:['бризы','пассаты','муссоны','западные'], ans:2, type:'single'},
+    {q:'Экваториальный климат характеризуется:', opts:['ровными высокими температурами весь год','чётко выраженными четырьмя сезонами','прохладным летом','мало осадков'], ans:0, type:'single'},
+    {q:'Умеренный климатический пояс характеризуется наличием:', opts:['четко выраженных сезонов (4 сезона)','постоянной жары','вечной мерзлоты','тропических штормов'], ans:0, type:'single'}
+  ]},
+  {section:'Облака, облачность и осадки', qs:[
+    {q:'Какие виды облаков перечислены в конспекте? (выберите все подходящие)', opts:['слоистые','кучевые','перисто-слоистые','перистые','кучево-дождевые'], ans:[0,1,2,3,4], type:'multi'},
+    {q:'Какие облака считаются самыми низкими?', opts:['слоистые','перистые','кучевые','кучево-дождевые'], ans:0, type:'single'},
+    {q:'С какими облаками связаны ливневые дожди и грозы?', opts:['перистые','слоистые','кучево-дождевые','перисто-слоистые'], ans:2, type:'single'},
+    {q:'Облачность определяют по какой шкале в материале?', opts:['10-балльной','8-балльной','5-балльной','3-балльной'], ans:0, type:'single'},
+    {q:'Атмосферные осадки измеряют в:', opts:['мм','м','см','литрах'], ans:0, type:'single'},
+    {q:'Сколько раз в сутки снимают показания осадкомера по материалу?', opts:['2 раза (7 и 19 часов)','1 раз','3 раза','4 раза'], ans:0, type:'single'}
+  ]},
+  {section:'Воды и реки — типы и запасы', qs:[
+    {q:'Что такое грунтовые (безнапорные) воды?', opts:['воды, близкие к поверхности, на глубине 3-30 м','воды между водонепроницаемыми слоями','ледниковые воды','поверхностные реки'], ans:0, type:'single'},
+    {q:'Артезианские воды — это:', opts:['воды между водонепроницаемыми слоями','поверхностные реки','воды озёр','льдовые воды'], ans:0, type:'single'},
+    {q:'Какой процент запасов пресной воды Казахстана указан в конспекте?', opts:['3%','50%','25%','10%'], ans:0, type:'single'},
+    {q:'Большая часть пресной воды Земли сосредоточена в:', opts:['ледниках и айсбергах','озёрах','реках','подземных водах'], ans:0, type:'single'},
+    {q:'Где по конспекту находится самое крупное озеро к северу от Полярного круга, упомянутое?', opts:['Таймыр','Байкал','Онтарио','Виктория'], ans:0, type:'single'},
+    {q:'Что такое речная система по конспекту?', opts:['совокупность рек, вытекающих одним общим руслом','единственная река','озёрная система','пойма реки'], ans:0, type:'single'}
+  ]},
+  {section:'Реки и озёра — факты', qs:[
+    {q:'Какая река названа самой мутной в мире в материале?', opts:['Хуанхэ','Амазонка','Нил','Янцзы'], ans:0, type:'single'},
+    {q:'Какая река указана как самая длинная в мире по конспекту?', opts:['Нил','Амазонка','Янцзы','Лена'], ans:0, type:'single'},
+    {q:'Какая река названа самой полноводной в Казахстане по материалу?', opts:['Иртыш','Сырдарья','Есиль','Ишим'], ans:0, type:'single'},
+    {q:'Какая часть Балхаша указана как пресная?', opts:['впадает Или — западная часть','восточная часть','южная часть','вся водная площадь'], ans:0, type:'single'},
+    {q:'Какие три знаменитых озера Африки перечислены в материале? (выберите все подходящие)', opts:['Виктория','Танганьика','Ньяса','Байкал'], ans:[0,1,2], type:'multi'}
+  ]},
+  {section:'Рельеф и география Казахстана', qs:[
+    {q:'Что такое равнина по высоте в материале?', opts:['до 200 метров','200-500 метров','500-1000 метров','выше 1000 м'], ans:0, type:'single'},
+    {q:'Какие низкие горы перечислены в Казахстане? (выберите все подходящие)', opts:['Мангыстау','Сарыарка','Муголджары','Тянь-Шань','Алтай'], ans:[0,1,2], type:'multi'},
+    {q:'Какая самая высокая точка Сарыарки указана?', opts:['Аксоран (1565 м)','Бесшокы (556 м)','Боктыбай (657 м)','Хан-Тэнгри'], ans:0, type:'single'},
+    {q:'Что такое плато и возвышенность по высоте в материале?', opts:['до 200 м','200-500 метров','500-1000 м','больше 1000 м'], ans:1, type:'single'},
+    {q:'Какая крупная горная система упомянута как часть Казахстана?', opts:['Альпы','Гималаи','Карпаты','Тянь-Шань'], ans:3, type:'single'}
+  ]},
+  {section:'Геополитика и границы', qs:[
+    {q:'Как по конспекту определяется геополитика у российских географов?', opts:['наука об управлении миром','политика внутри страны','экономика','социология'], ans:0, type:'single'},
+    {q:'Какова главная цель геополитики согласно материалу?', opts:['определение и обоснование геостратегии государства','создание карт','разработка законов','регулирование торговли'], ans:0, type:'single'},
+    {q:'Кто может быть субъектом геополитики? (выберите все подходящие)', opts:['государство','нация','союз государств','население','геостратегия'], ans:[0,1,2,3], type:'multi'},
+    {q:'Что называют "мягкой силой" в геополитике по материалу?', opts:['причинение ущерба без применения военной силы','военная интервенция','экономические санкции','торговая блокада'], ans:0, type:'single'},
+    {q:'Сколько государств мира не имеют выхода к морю по материалу?', opts:['44','36','20','5'], ans:0, type:'single'}
+  ]},
+  {section:'Границы Казахстана и демаркация', qs:[
+    {q:'Протяжённость сухопутных границ Казахстана по материалу составляет:', opts:['13394 км','7591 км','3000 км','2354 км'], ans:0, type:'single'},
+    {q:'Когда был подписан протокол о демаркации с Китаем (в Пекине) по конспекту?', opts:['10 мая 2002','5 июля 2001','12 января 2006','25 декабря 2017'], ans:0, type:'single'},
+    {q:'Когда подписан протокол о демаркации с Россией?', opts:['12 января 2006','5 июля 2001','10 мая 2002','31 декабря 1999'], ans:0, type:'single'},
+    {q:'Какая граница Казахстана самая короткая по протяжённости (в списке)?', opts:['с Туркменистаном (426 км)','с Китаем','с Россией','с Узбекистаном'], ans:0, type:'single'}
+  ]},
+  {section:'Биота морей и водные экосистемы', qs:[
+    {q:'Что такое планктон?', opts:['донные организмы','свободно дрейфующие мелкие организмы','рыбы','водоросли на берегу'], ans:1, type:'single'},
+    {q:'Кто относится к нектони?', opts:['донные организмы','активно плавающие организмы, например киты и акулы','планктон','растительный покров прибрежной зоны'], ans:1, type:'single'},
+    {q:'Кто относится к бентосу?', opts:['донные организмы: морские звезды, камбала, скаты','акулы','птицы','водоросли плавающие'], ans:0, type:'single'},
+    {q:'К планктону относятся:', opts:['только рыбы','фитопланктон и зоопланктон','только моллюски','только водоросли'], ans:1, type:'single'}
+  ]},
+  {section:'Океаны и моря — факты', qs:[
+    {q:'Какой океан имеет наибольшую площадь по материалу?', opts:['Тихий океан','Атлантический','Индийский','Северный Ледовитый'], ans:0, type:'single'},
+    {q:'Какой океан имеет объём воды около 710 млн км³ (в конспекте)?', opts:['Тихий','Атлантический','Индийский','Северный Ледовитый'], ans:0, type:'single'},
+    {q:'Примерно сколько морей указано в Тихом океане по материа́лу?', opts:['25','10','50','5'], ans:0, type:'single'},
+    {q:'Что занимает около 11% площади дна Тихого океана по материалу?', opts:['срединно-океанические хребты','континентальные шельфы','острова','коралловые рифы'], ans:0, type:'single'},
+    {q:'Какие самые большие моря Тихого океана перечислены? (выберите все подходящие)', opts:['Филиппинское','Коралловое','Берингово','Тасманово','Средиземное'], ans:[0,1,2,3], type:'multi'}
+  ]}
+];
+
+/* SHUFFLE FUNCTION - Fisher-Yates algorithm */
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+/* SHUFFLE OPTIONS IN EACH QUESTION */
+data.forEach(section => {
+  section.qs.forEach(question => {
+    // Store the original answer index/indices
+    const originalAns = question.ans;
+    const originalOpts = [...question.opts];
+    
+    // Create an array of indices [0, 1, 2, ...] and shuffle them
+    const indices = Array.from({length: question.opts.length}, (_, i) => i);
+    const shuffledIndices = shuffleArray([...indices]);
+    
+    // Shuffle the options according to the shuffled indices
+    question.opts = shuffledIndices.map(i => originalOpts[i]);
+    
+    // Update the answer indices
+    if (question.type === 'single') {
+      // For single answer, find the new position of the original correct answer
+      question.ans = shuffledIndices.indexOf(originalAns);
+    } else if (question.type === 'multi') {
+      // For multiple answers, map each original correct index to its new position
+      question.ans = originalAns.map(ansIndex => shuffledIndices.indexOf(ansIndex));
+    }
+  });
+});
+
+/* Render UI (structure preserved) */
+const main = document.getElementById('main');
+let qGlobalIndex = 0;
+const state = []; // {answered:boolean, correct:boolean}
+
+data.forEach((section)=>{
+  const secEl = document.createElement('section');
+  secEl.className = 'section';
+  const h2 = document.createElement('h2');
+  h2.textContent = section.section;
+  secEl.appendChild(h2);
+
+  let localIndex = 0;
+  section.qs.forEach((q)=>{
+    localIndex++;
+    qGlobalIndex++;
+    const qIndex = qGlobalIndex - 1;
+    state.push({answered:false, correct:false});
+    const qDiv = document.createElement('div');
+    qDiv.className = 'q';
+    qDiv.id = `q-${section.section.replace(/\s+/g,'_')}-${localIndex}`;
+    const h3 = document.createElement('h3');
+    h3.textContent = `${localIndex}. ${q.q}`;
+    qDiv.appendChild(h3);
+
+    const opts = document.createElement('div');
+    opts.className = 'opts';
+    q.opts.forEach((opt,i)=>{
+      const id = `q${qGlobalIndex}_opt${i}`;
+      const label = document.createElement('label');
+      label.className = 'opt';
+      label.htmlFor = id;
+      const input = document.createElement('input');
+      input.type = (q.type==='multi') ? 'checkbox' : 'radio';
+      input.name = `q${qGlobalIndex}`;
+      input.id = id;
+      input.value = i;
+      const span = document.createElement('span');
+      span.textContent = opt;
+      label.appendChild(input);
+      label.appendChild(span);
+      opts.appendChild(label);
+    });
+    qDiv.appendChild(opts);
+
+    const controls = document.createElement('div');
+    controls.className = 'controls';
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.type = 'button';
+    btn.textContent = 'Подтвердить ответ';
+    const note = document.createElement('div');
+    note.className = 'note';
+    controls.appendChild(btn);
+    controls.appendChild(note);
+    qDiv.appendChild(controls);
+
+    btn.addEventListener('click', (() => { const currentIndex = qIndex; const currentGlobal = qGlobalIndex; return () => {
+      if(state[currentIndex].answered) return;
+      if(q.type==='single'){
+        const sel = qDiv.querySelector(`input[name='q${currentGlobal}']:checked`);
+        if(!sel){ note.textContent='Выберите вариант ответа!'; note.style.color='#ff8800'; note.classList.add('show'); return; }
+        const val = Number(sel.value);
+        if(val === q.ans){
+          note.innerHTML = `<span class="badge ok">Верно</span> Правильный ответ: ${q.opts[q.ans]}`;
+          note.classList.add('show'); note.style.color=''; state[currentIndex].correct=true;
+          const labels = qDiv.querySelectorAll('label.opt'); labels[val].classList.add('highlight-correct');
+        } else {
+          note.innerHTML = `<span class="badge err">Неверно</span> Ваш ответ: ${q.opts[val]}. Правильно: ${q.opts[q.ans]}`;
+          note.classList.add('show'); state[currentIndex].correct=false;
+          const labels = qDiv.querySelectorAll('label.opt'); if(labels[val]) labels[val].classList.add('highlight-wrong');
+          if(labels[q.ans]) labels[q.ans].classList.add('highlight-correct');
+        }
+        qDiv.querySelectorAll('input').forEach(i=>i.disabled=true);
+        btn.disabled=true;
+        state[currentIndex].answered=true;
+        qDiv.animate([{transform:'scale(1)'},{transform:'scale(1.01)'}],{duration:260,fill:'forwards',easing:'cubic-bezier(.2,.9,.3,1)'});
+        window.scrollBy({top:200,behavior:'smooth'});
+      } else if(q.type==='multi'){
+        const checked = [...qDiv.querySelectorAll(`input[name='q${currentGlobal}']:checked`)].map(i=>Number(i.value)).sort();
+        if(checked.length===0){ note.textContent='Выберите варианты ответа!'; note.style.color='#ff8800'; note.classList.add('show'); return; }
+        const expected = q.ans.slice().sort();
+        const equal = (checked.length===expected.length) && checked.every((v,i)=>v===expected[i]);
+        if(equal){
+          note.innerHTML = `<span class="badge ok">Верно</span> Вы выбрали все правильные варианты.`;
+          note.classList.add('show'); state[currentIndex].correct=true;
+          expected.forEach(idx=>{ qDiv.querySelectorAll('label.opt')[idx].classList.add('highlight-correct'); });
+        } else {
+          const correctList = expected.map(i=>q.opts[i]).join(', ');
+          const yourList = checked.map(i=>q.opts[i]).join(', ');
+          note.innerHTML = `<span class="badge err">Неверно</span> Ваш выбор: ${yourList || '—'}. Правильные: ${correctList}.`;
+          note.classList.add('show'); state[currentIndex].correct=false;
+          expected.forEach(idx=>{ qDiv.querySelectorAll('label.opt')[idx].classList.add('highlight-correct'); });
+        }
+        qDiv.querySelectorAll('input').forEach(i=>i.disabled=true);
+        btn.disabled=true;
+        state[currentIndex].answered=true;
+        qDiv.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:420, easing:'ease-out'});
+        window.scrollBy({top:200,behavior:'smooth'});
+      }
+    }})());
+
+    secEl.appendChild(qDiv);
+  });
+
+  main.appendChild(secEl);
+});
+
+const backdrop = document.getElementById('backdrop');
+const modalBox = document.getElementById('modalBox');
+const modalBody = document.getElementById('modal-body');
+const confettiCanvas = document.getElementById('confetti');
+let confettiCtx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+function initConfetti(){
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+function launchConfetti(){
+  initConfetti();
+  confettiParticles = [];
+  const colors = ['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6','#ec4899'];
+  for(let i=0;i<200;i++){
+    confettiParticles.push({
+      x: Math.random()*confettiCanvas.width,
+      y: -Math.random()*confettiCanvas.height,
+      vx: (Math.random()-0.5)*6,
+      vy: Math.random()*6+2,
+      size: Math.random()*8+4,
+      color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random()*360,
+      vr: (Math.random()-0.5)*10
+    });
+  }
+  confettiCanvas.classList.add('show');
+  renderConfetti();
+  setTimeout(()=>{ confettiCanvas.classList.remove('show'); }, 5200);
+}
+let confettiAnimId = null;
+function renderConfetti(){
+  if(!confettiCtx) confettiCtx = confettiCanvas.getContext('2d');
+  confettiCtx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  for(let p of confettiParticles){
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.12;
+    p.rot += p.vr;
+    confettiCtx.save();
+    confettiCtx.translate(p.x,p.y);
+    confettiCtx.rotate(p.rot*Math.PI/180);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+    confettiCtx.restore();
+  }
+  confettiParticles = confettiParticles.filter(p=>p.y < confettiCanvas.height + 50);
+  if(confettiParticles.length>0){
+    confettiAnimId = requestAnimationFrame(renderConfetti);
+  } else {
+    if(confettiAnimId) cancelAnimationFrame(confettiAnimId);
+    confettiAnimId = null;
+  }
+}
+
+document.getElementById('submit-all').addEventListener('click', ()=>{
+  const answered = state.filter(s=>s.answered).length;
+  const correct = state.filter(s=>s.correct).length;
+  const percent = Math.round((correct/state.length)*100);
+  modalBody.innerHTML = `<strong style="font-size:22px">${correct} / ${state.length} (${percent}%)</strong><p style="margin-top:8px;color:var(--muted)">Отвечено: ${answered} вопросов.</p>`;
+  backdrop.style.pointerEvents = 'auto';
+  backdrop.classList.add('show');
+  modalBox.classList.add('show');
+  launchConfetti();
+});
+
+document.getElementById('close-modal').addEventListener('click', ()=>{
+  backdrop.classList.remove('show');
+  modalBox.classList.remove('show');
+  backdrop.style.pointerEvents = 'none';
+});
+
+document.getElementById('reset').addEventListener('click', ()=>{
+  if(!confirm('Сбросить тест и начать заново?')) return;
+  state.forEach((s,idx)=>{ s.answered=false; s.correct=false; });
+  document.querySelectorAll('input').forEach(i=>{ i.disabled=false; i.checked=false; });
+  document.querySelectorAll('button.btn').forEach(b=>b.disabled=false);
+  document.querySelectorAll('.note').forEach(n=>{ n.textContent=''; n.classList.remove('show'); });
+  document.querySelectorAll('label.opt').forEach(l=>{ l.classList.remove('highlight-correct','highlight-wrong'); });
+  backdrop.classList.remove('show');
+  modalBox.classList.remove('show');
+  backdrop.style.pointerEvents = 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+window.addEventListener('resize', initConfetti);
+initConfetti();
+
+</script>
+</body>
+</html>
